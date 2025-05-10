@@ -1,0 +1,19 @@
+# Data handling and computing :
+numpy>=1.21.0
+pandas>=1.3.0
+re
+
+# Image processing :
+Pillow>=8.0.0
+
+# Machine learning :
+torch>=1.13.0
+torchvision>=0.14.0
+scikit-learn>=1.0.0
+
+# Plotting and visualization :
+matplotlib>=3.4.0
+
+# Blender’s Python API :
+bpy
+mathutils
