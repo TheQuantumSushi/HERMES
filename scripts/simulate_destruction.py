@@ -8,7 +8,7 @@ that correctly faces the impact point, saving it to HERMES/data/dataset/photos.
 Computes the average displacement vector of all the debris of the building and
 computes the projected 2D coordinates on the photo, then appends these to the
 HERMES/data/dataset/labels.csv for labelisation of the dataset.
-It uses bpy, the Blender Python API library, to interact with Blender.
+Uses bpy, the Blender Python API library, to interact with Blender.
 """
 
 ### IMPORT LIBRARIES :
@@ -27,7 +27,7 @@ from bpy_extras.object_utils import world_to_camera_view
 
 ### DEFINE PATHS :
 
-HERMES_ROOT = os.environ["HERMES_ROOT"]
+HERMES_ROOT = os.environ["HERMES_ROOT"] # load from environment variable
 LOG_PATH = os.path.join(HERMES_ROOT, "logs.txt")
 SCRIPT_DIR = os.path.join(HERMES_ROOT, "scripts")
 DATA_DIR = os.path.join(HERMES_ROOT, "data")
@@ -97,7 +97,14 @@ def label_vector_to_csv(image_path, x1, y1, x2, y2):
 
 def main(min_speed = 10.0, max_speed = 25.0, bullet_mass = 1e3, distance = 12.0, sim_duration = 30):
     """
-    Perform the simulation and call the necessary function to save it and label it
+    Perform the simulation and call the necessary function to save it and label it.
+
+    Args :
+        - min_speed [float] : the minimum bullet speed
+        - max_speed [float] : the maximum bullet speed
+        - bullet_mass [float] : the bullet's mass
+        - distance [float] : the distance from the building at which the bullet starts
+        - sim_duration [int] : the duration of the simulation (in seconds)
     """
 
     # Initialize logging :
@@ -114,7 +121,7 @@ def main(min_speed = 10.0, max_speed = 25.0, bullet_mass = 1e3, distance = 12.0,
     bpy.context.scene.cycles.device = 'GPU'
     logging.info("Enabled GPU rendering for Cycles")
 
-    # Ensure existence of necessary directories, create them if inexistent :    
+    # Ensure existence of necessary directories, create them if inexistent :
     for d in [SCENES_DIR, PHOTOS_DIR, DATASET_DIR]:
         os.makedirs(d, exist_ok = True)
     logging.info(f"Directories existence ensured : BUILD_DIR = {BUILD_DIR}, SCENES_DIR = {SCENES_DIR}, PHOTOS_DIR = {PHOTOS_DIR}")
@@ -325,7 +332,8 @@ def main(min_speed = 10.0, max_speed = 25.0, bullet_mass = 1e3, distance = 12.0,
     x2, y2 = project_to_pixel(scene, cam, end_pt)
     label_vector_to_csv(photo_path, x1, y1, x2, y2)
 
-    duration = time.time() - start_time # execution time of this program
+    # Log execution time of this program :
+    duration = time.time() - start_time
     logging.info(f"Script completed in {duration:.2f} seconds")
 
 # Example usage :
